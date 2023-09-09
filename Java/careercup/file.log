@@ -1,0 +1,5 @@
+hello /* this is a
+multi line comment */ all
+this "//shouldn't get removed /*"
+but /*this is get removed */
+how about// this line
