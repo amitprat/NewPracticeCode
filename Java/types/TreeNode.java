@@ -1,4 +1,4 @@
-package programs.types;
+package Java.types;
 
 public class TreeNode<T> {
     public T val;

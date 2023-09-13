@@ -1,4 +1,4 @@
-package programs.types;
+package Java.types;
 
 public class Triplet<F, S, T> {
     public F first;

@@ -1,7 +1,4 @@
-#pragma once
 #include "../header.h"
-using namespace std;
-
 /*
 * Sort an array according to the order defined by another array
 * Given two arrays A1[] and A2[], sort A1 in such a way that the relative order among the elements will be same as those are in A2.
@@ -11,23 +8,19 @@ Input: A1[] = {2, 1, 2, 5, 7, 1, 9, 3, 6, 8, 8}
        A2[] = {2, 1, 8, 3}
 Output: A1[] = {2, 2, 1, 1, 8, 8, 3, 5, 6, 7, 9}
 */
-
-class SortArrByGivenOrderOfElements
-{
-public:
-    static void test()
-    {
+class SortArrByGivenOrderOfElements {
+   public:
+    static void test() {
         SortArrByGivenOrderOfElements obj;
-        vector<int> input = { 2, 1, 2, 5, 7, 1, 9, 3, 6, 8, 8 };
-        vector<int> order = { 2, 1, 8, 3 };
+        vector<int> input = {2, 1, 2, 5, 7, 1, 9, 3, 6, 8, 8};
+        vector<int> order = {2, 1, 8, 3};
         vector<int> output = input;
         obj.sortArray(output, order);
 
         cout << format("input={}, order={}, output={}", to_string(input), to_string(order), to_string(output)) << endl;
     }
 
-    void sortArray(vector<int>& arr, vector<int> order)
-    {
+    void sortArray(vector<int>& arr, vector<int> order) {
         unordered_map<int, int> posMap;
         for (int i = 0; i < order.size(); i++) posMap[order[i]] = i;
 
@@ -36,16 +29,13 @@ public:
             bool found2 = posMap.find(s) != posMap.end();
             if (!found1 && !found2) {
                 return f < s;
-            }
-            else if (found1 && found2) {
+            } else if (found1 && found2) {
                 return posMap[f] < posMap[s];
-            }
-            else if (!found2) {
+            } else if (!found2) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
-            });
+        });
     }
 };

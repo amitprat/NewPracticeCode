@@ -150,3 +150,68 @@ struct Interval {
         return this->start == that.start && this->end == that.end;
     }
 };
+
+template <typename T>
+string to_string(vector<T> arr) {
+    stringstream ss;
+    ss << "[";
+    for (auto &e : arr) {
+        ss << e << ",";
+    }
+    ss.seekp(-1, std::ios_base::end);
+    ss << "]";
+
+    return ss.str();
+}
+
+struct TreeNode {
+    int val;
+    TreeNode *left, *right;
+    TreeNode(int val) : val(val), left(nullptr), right(nullptr) {}
+    string to_string() {
+        return std::to_string(val);
+    }
+};
+
+struct ListNode {
+    int val;
+    ListNode *prev, *next;
+    ListNode(int val) : val(val), prev(nullptr), next(nullptr) {}
+    string to_string() {
+        return std::to_string(val);
+    }
+
+    static ListNode *create(const vector<int> &arr) {
+        ListNode *head = new ListNode(-1);  // dummy
+        for (auto &e : arr) {
+            head->next = new ListNode(e);
+            head = head->next;
+        }
+
+        auto next = head->next;
+        delete head;
+
+        return next;
+    }
+
+    static int length(ListNode *head) {
+        int sz = 0;
+        while (head) {
+            sz++;
+            head = head->next;
+        }
+
+        return sz;
+    }
+};
+
+ostream &operator<<(ostream &out, ListNode *head) {
+    out << "{";
+    while (head) {
+        out << head->to_string() << ", ";
+        head = head->next;
+    }
+    out << "}";
+
+    return out;
+}

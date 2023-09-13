@@ -1,4 +1,4 @@
-package programs.tree;
+package Java.tree;
 
 public class Node<T> {
     T val;
@@ -13,7 +13,7 @@ public class Node<T> {
         this.sz = 1;
     }
 
-    Node(T val, Node left, Node right) {
+    Node(T val, Node<T> left, Node<T> right) {
         this.val = val;
         this.left = left;
         this.right = right;

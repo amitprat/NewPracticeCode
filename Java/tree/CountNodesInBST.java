@@ -1,8 +1,8 @@
-package programs.tree;
+package Java.tree;
 
-public class CountNodes {
+public class CountNodesInBST {
     public static void test() {
-        CountNodes obj = new CountNodes();
+        CountNodesInBST obj = new CountNodesInBST();
         BinarySearchTree<Integer> bst = new BinarySearchTree<>();
         bst.insert(5);
         bst.insert(3);
@@ -20,7 +20,8 @@ public class CountNodes {
     }
 
     private int count(Node<Integer> root, int from, int to) {
-        if (root == null) return 0;
+        if (root == null)
+            return 0;
 
         int r = less(root, to);
         int l = less(root, from - 1);
@@ -29,13 +30,18 @@ public class CountNodes {
     }
 
     private int less(Node<Integer> root, int val) {
-        if (root == null) return 0;
-        if (val >= root.val) return 1 + size(root.left) + less(root.right, val);
+        if (root == null)
+            return 0;
+
+        if (val >= root.val)
+            return 1 + size(root.left) + less(root.right, val);
         return less(root.left, val);
     }
 
     private int size(Node<Integer> left) {
-        if (left == null) return 0;
+        if (left == null)
+            return 0;
+
         return left.sz;
     }
 }

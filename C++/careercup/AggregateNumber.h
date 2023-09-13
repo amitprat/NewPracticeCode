@@ -1,9 +1,18 @@
 #include "../header.h"
 
+/*
+A number is aggreate number if it is formed by adding previous 2 digits.
+For example: 112358
+1+1 = 2
+1+2 = 3
+2+3 = 5
+3+5 = 8
+*/
 class AggregateNumber {
    public:
     static void test() {
         vector<int> numbers = {112358, 122436, 1299111210, 112112224, 222442, 1, 12, 123, 1234};
+
         AggregateNumber obj;
         for (auto num : numbers) {
             auto res = obj.isAggregate(num);
@@ -28,15 +37,15 @@ class AggregateNumber {
         string first = num.substr(0, i);
         string second = num.substr(i, j);
 
-        string cur = first + second;
-        while (cur.length() < num.length()) {
-            int third = stoi(first) + stoi(second);
-            cur += std::to_string(third);
+        string combined = first + second;
+        while (combined.length() < num.length()) {
+            string third = std::to_string(stoi(first) + stoi(second));
+            combined += third;
 
             first = second;
-            second = std::to_string(third);
+            second = third;
         }
 
-        return cur.length() == num.length() && cur == num;
+        return combined.length() == num.length() && combined == num;
     }
 };

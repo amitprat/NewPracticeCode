@@ -11,33 +11,34 @@ This can be done in 3 steps:
 2. Merge this two sorted linked lists to a single list (this can be done in place with O(m+n) time)
 3. Convert sorted linked list to balanced BST (this can be done in place with O(m+n) time)
 */
+
 class MergeTwoBalancedBST {
    private:
-    Node *mergeBst(Node *root1, Node *root2) {
-        LinkedListNode *head1, head2;
+    TreeNode *mergeBst(TreeNode *root1, TreeNode *root2) {
+        ListNode *head1, *head2;
 
         head1 = inorder(root1, head1);
         head2 = inorder(root2, head2);
 
-        LinkedListNode *head = mergeLinkedList(head1, head2);
+        ListNode *head = mergeLinkedList(head1, head2);
 
-        Node *root = convertSortedListToBst(head);
+        TreeNode *root = convertSortedListToBst(head);
     }
 
-    LinkedListNode *inorder(Node *root, LinkedListNode *head) {
+    ListNode *inorder(TreeNode *root, ListNode *head) {
         if (!root) return head;
 
         inorder(root->left, head);
         if (!head)
-            head = new Node(root->val);
+            head = new ListNode(root->val);
         else {
-            head->next = new Node(root->val);
+            head->next = new ListNode(root->val);
             head = head->next;
         }
         inorder(root->right, head);
     }
 
-    LinkedListNode *mergeLinkedList(LinkedListNode *head1, LinkedListNode *head2) {
+    ListNode *mergeLinkedList(ListNode *head1, ListNode *head2) {
         if (!head1) return head2;
         if (!head2) return head1;
 
@@ -51,23 +52,26 @@ class MergeTwoBalancedBST {
     }
 
    private:
-    Node *convertSortedListToBst(LinkedListNode *head) {
+    TreeNode *convertSortedListToBst(ListNode *head) {
         if (!head) return nullptr;
+
+        ListNode *first = nullptr, *second = nullptr;
         auto mid = findMid(head, first, second);
-        Node *root = new Node(mid->val);
+
+        TreeNode *root = new TreeNode(mid->val);
         root->left = convertSortedListToBst(first);
         root->right = convertSortedListToBst(second);
 
         return root;
     }
 
-    Node *findMid(LinkedListNode *head, Node *&first, Node *&second) {
+    ListNode *findMid(ListNode *head, ListNode *&first, ListNode *&second) {
         if (!head) return nullptr;
         if (!head->next) return head;
 
         first = head;
         second = head->next;
-        Node *mid;
+        ListNode *mid;
 
         while (second && second->next) {
             mid = first;
@@ -83,18 +87,18 @@ class MergeTwoBalancedBST {
     }
 
    private:
-    Node *convertSortedListToBstOptimized(LinkedListNode *head) {
+    TreeNode *convertSortedListToBstOptimized(ListNode *head) {
         int n = size(head);
 
         return convertSortedListToBstOptimized(head, n);
     }
 
-    Node *convertSortedListToBstOptimized(LinkedListNode *&head, int n) {
+    TreeNode *convertSortedListToBstOptimized(ListNode *&head, int n) {
         if (n == 0) return nullptr;
 
         auto left = convertSortedListToBstOptimized(head, n / 2);
 
-        Node *root = new Node(head->val);
+        TreeNode *root = new TreeNode(head->val);
         head = head->next;
 
         root->left = left;
@@ -102,5 +106,15 @@ class MergeTwoBalancedBST {
         root->right = convertSortedListToBstOptimized(head, n - n / 2 - 1);
 
         return root;
+    }
+
+    int size(ListNode *head) {
+        int sz = 0;
+        while (head) {
+            head = head->next;
+            sz++;
+        }
+
+        return sz;
     }
 };

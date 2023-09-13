@@ -1,4 +1,4 @@
-package programs.tree;
+package Java.tree;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,11 +8,11 @@ public class CloneBinaryTree {
         CloneBinaryTree obj = new CloneBinaryTree();
         Node root = obj.construct();
 
-        System.out.println("Old Tree: ");
+        System.out.print("Old Tree: ");
         obj.inorder(root);
         System.out.println();
 
-        System.out.println("New Tree: ");
+        System.out.print("New Tree: ");
         Node newRoot = obj.clone(root);
         obj.inorder(newRoot);
         System.out.println();
@@ -27,7 +27,9 @@ public class CloneBinaryTree {
     }
 
     private Node copyNodes(Node cur, Map<Node, Node> nodeMap) {
-        if (cur == null) return cur;
+        if (cur == null)
+            return cur;
+
         Node newNode = new Node(cur.val);
         nodeMap.put(cur, newNode);
 
@@ -38,8 +40,11 @@ public class CloneBinaryTree {
     }
 
     private void copyRandomPtr(Node oldNode, Node newNode, Map<Node, Node> nodeMap) {
-        if (oldNode == null) return;
+        if (oldNode == null)
+            return;
+
         newNode.random = nodeMap.getOrDefault(oldNode.random, null);
+
         copyRandomPtr(oldNode.left, newNode.left, nodeMap);
         copyRandomPtr(oldNode.right, newNode.right, nodeMap);
     }
@@ -79,9 +84,12 @@ public class CloneBinaryTree {
         public String toString() {
             String str = "(val:";
             str += Integer.toString(val);
-            if (left != null) str += ",left:" + left.val;
-            if (right != null) str += ",right:" + right.val;
-            if (random != null) str += ",random:" + random.val;
+            if (left != null)
+                str += ",left:" + left.val;
+            if (right != null)
+                str += ",right:" + right.val;
+            if (random != null)
+                str += ",random:" + random.val;
             str += ")";
 
             return str;

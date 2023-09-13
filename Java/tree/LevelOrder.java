@@ -1,6 +1,5 @@
-package programs.tree;
-
-import programs.types.Pair;
+package Java.tree;
+import Java.types.Pair;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -45,6 +44,7 @@ public class LevelOrder {
 
         private int height(Node cur) {
             if (cur == null) return 0;
+            
             return 1 + Math.max(height(cur.left), height(cur.right));
         }
 

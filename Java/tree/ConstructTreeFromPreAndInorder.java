@@ -1,12 +1,12 @@
-package programs.tree;
+package Java.tree;
 
-public class ConstructTree {
+public class ConstructTreeFromPreAndInorder {
     private int preIndex = 0;
 
     public static void test() {
-        ConstructTree obj = new ConstructTree();
-        char[] in = {'D', 'B', 'E', 'A', 'F', 'C'};
-        char[] pre = {'A', 'B', 'D', 'E', 'C', 'F'};
+        ConstructTreeFromPreAndInorder obj = new ConstructTreeFromPreAndInorder();
+        char[] in = { 'D', 'B', 'E', 'A', 'F', 'C' };
+        char[] pre = { 'A', 'B', 'D', 'E', 'C', 'F' };
         Node root = obj.construct(pre, in);
 
         obj.inorder(root);
@@ -24,10 +24,13 @@ public class ConstructTree {
     }
 
     private Node construct(char[] pre, char[] in, int l, int r) throws Exception {
-        if (preIndex >= pre.length || l > r) return null;
+        if (preIndex >= pre.length || l > r)
+            return null;
+
         var curNode = new Node(pre[preIndex++]);
         var inIndex = find(in, l, r, curNode.val);
-        if (inIndex == -1) throw new Exception("Unknown exception");
+        if (inIndex == -1)
+            throw new Exception("Unknown exception");
 
         curNode.left = construct(pre, in, l, inIndex - 1);
         curNode.right = construct(pre, in, inIndex + 1, r);
@@ -37,7 +40,8 @@ public class ConstructTree {
 
     private int find(char[] in, int l, int r, char ch) {
         for (var i = l; i <= r; i++) {
-            if (in[i] == ch) return i;
+            if (in[i] == ch)
+                return i;
         }
         return -1;
     }

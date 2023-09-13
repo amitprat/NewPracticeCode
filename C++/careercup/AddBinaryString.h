@@ -1,5 +1,4 @@
 #include "../header.h"
-
 /*
 Implement binary addition of two strings.
 For example "101101" and "111101" equal "1101010"
@@ -10,13 +9,12 @@ https://careercup.com/question?id=5699214707785728
 class AddBinaryString {
    public:
     static void test() {
-        vector<pair<string, string>> inputs =
-            {
-                {"10101010", "00100011"},
-                {"101101", "111101"},
-                {"1", "101011"},
-                {"01011", "0"},
-                {"", "101010"}};
+        vector<pair<string, string>> inputs = {
+            {"10101010", "00100011"},
+            {"101101", "111101"},
+            {"1", "101011"},
+            {"01011", "0"},
+            {"", "101010"}};
 
         AddBinaryString obj;
         for (auto &input : inputs) {
@@ -43,14 +41,13 @@ class AddBinaryString {
 
         int carry = 0;
         string s3 = addBinary(s1, s2, 0, l, carry);
-        if (carry)
-            s3 = "1" + s3;
+        if (carry) s3 = "1" + s3;
+
         return s3;
     }
 
     string addBinary(string s1, string s2, int idx, int l, int &carry) {
-        if (idx == l)
-            return "";
+        if (idx == l) return "";
 
         string next = addBinary(s1, s2, idx + 1, l, carry);
 

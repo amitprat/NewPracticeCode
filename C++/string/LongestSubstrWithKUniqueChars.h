@@ -1,30 +1,27 @@
-#pragma once
 #include "../header.h"
 
-class LongestSubstrWithKUniqueChars
-{
-public:
+class LongestSubstrWithKUniqueChars {
+   public:
     static void test() {
         LongestSubstrWithKUniqueChars obj;
-        string str = "abcbbbbcccbdddadacb";
         vector<pair<pair<string, int>, string>> tests{
-            {{"",2},""},
-            {{"a",1},"a"},
-            {{"ab",1},"a"},
-            {{"ab",2},"ab"},
-            {{"aaaaaaab",2},"aaaaaaab"},
-            {{"abbbbbbb",2},"abbbbbbb"},
-            {{"caaaaaaab",2},"caaaaaaa"},
-            {{"caaaaaaab",1},"aaaaaaa"},
-            {{"abcbbbbcccbdddadacb",3},"bcbbbbcccbddd"},
-            {{"abcbbbbcccbcbaadacb",3},"abcbbbbcccbcbaa"},
-            {{"abcbbbbcccbdddadacb",1},"bbbb"},
-            {{"abcbbbbcccbcbaadacb",2},"bcbbbbcccbcb"},
-            {{"abcbbbbcccbcbaadacb",4},"abcbbbbcccbcbaadacb"}
-        };
+            {{"", 2}, ""},
+            {{"a", 1}, "a"},
+            {{"ab", 1}, "a"},
+            {{"ab", 2}, "ab"},
+            {{"aaaaaaab", 2}, "aaaaaaab"},
+            {{"abbbbbbb", 2}, "abbbbbbb"},
+            {{"caaaaaaab", 2}, "caaaaaaa"},
+            {{"caaaaaaab", 1}, "aaaaaaa"},
+            {{"abcbbbbcccbdddadacb", 3}, "bcbbbbcccbddd"},
+            {{"abcbbbbcccbcbaadacb", 3}, "abcbbbbcccbcbaa"},
+            {{"abcbbbbcccbdddadacb", 1}, "bbbb"},
+            {{"abcbbbbcccbcbaadacb", 2}, "bcbbbbcccbcb"},
+            {{"abcbbbbcccbcbaadacb", 4}, "abcbbbbcccbcbaadacb"}};
+
         for (auto& test : tests) {
-            auto res = obj.longest(test.first.first, test.first.second);
-            cout << "Longest Unique string :" << res << endl;
+            auto res = obj.longestSubstring(test.first.first, test.first.second);
+            cout << format("Longest substring in str={} with k={} unique characters is {}", test.first.first, test.first.second, res) << endl;
             assert(test.second == res);
         }
     }
@@ -40,8 +37,7 @@ public:
             if (map.find(curChar) == map.end()) {
                 positions.push_back(index);
                 map[curChar] = positions.size() - 1;
-            }
-            else {
+            } else {
                 auto posIndex = map[curChar];
                 positions[posIndex] = index;
             }
@@ -59,5 +55,32 @@ public:
         }
 
         return res;
+    }
+
+   private:
+    string longestSubstring(const string& str, int k) {
+        unordered_map<char, int> freqMap;
+        string mxStr;
+
+        int i = 0, j = 0;
+        while (j < str.length()) {
+            char ch = str[j];
+            freqMap[ch]++;
+
+            while (freqMap.size() > k) {
+                char pre = str[i];
+                freqMap[pre]--;
+                if (freqMap[pre] <= 0) freqMap.erase(pre);
+                i++;
+            }
+
+            if (mxStr.length() == 0 || mxStr.length() < j - i + 1) {
+                mxStr = str.substr(i, j - i + 1);
+            }
+
+            j++;
+        }
+
+        return mxStr;
     }
 };

@@ -4,13 +4,22 @@ class TaskSchedulingWithCooldown {
    public:
     static void test() {
         TaskSchedulingWithCooldown obj;
-        vector<char> tasks = {'A', 'A', 'A', 'A', 'A', 'A', 'B'};  //, 'C', 'D', 'E', 'F', 'G'};
-        auto res = obj.leastInterval(6, 5, tasks);
-        cout << res << endl;
+        vector<pair<vector<char>, int>> inputs = {
+            {{'A', 'B', 'C', 'D'}, 3},
+            {{'A', 'B', 'A', 'D'}, 3},
+            {{'A', 'A', 'A', 'A'}, 3},
+            {{'A', 'B', 'C', 'A', 'C', 'B', 'D', 'A'}, 4},
+            {{'A', 'A', 'A', 'B', 'B', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'}, 7}};
+        for (auto& input : inputs) {
+            auto tasks = input.first;
+            int k = input.second;
+            int totalSpace = obj.leastInterval(tasks, k);
+            cout << format("Input={}, K={}, totalSpace={}", to_string(tasks), k, totalSpace) << endl;
+        }
     }
 
    private:
-    int leastInterval(int N, int K, vector<char>& tasks) {
+    int leastInterval(vector<char>& tasks, int K) {
         using P = pair<int, int>;
         auto comparator = [](const auto& f, const auto& s) { return f.second < s.second; };
         priority_queue<P, vector<P>, decltype(comparator)> pq;
@@ -23,12 +32,17 @@ class TaskSchedulingWithCooldown {
         int period = 0;
         while (!pq.empty()) {
             vector<char> curTasks;
+            vector<pair<int, int>> rest;
 
             // add current task to list
             auto cur = pq.top();
             pq.pop();
             curTasks.push_back(cur.first);
-            period++;
+            period++;  // increment period for current element
+
+            // reduce occurance of this element and insert into rest
+            cur.second--;
+            if (cur.second) rest.push_back(cur);
 
             // calculate cooldown period
             int cooldown = 0;
@@ -37,17 +51,18 @@ class TaskSchedulingWithCooldown {
             // reduce frequency of rest of element
             int mn = min((int)pq.size(), K);
             period += mn;
+
             while (mn--) {
-                auto rest = pq.top();
+                auto top = pq.top();
                 pq.pop();
-                rest.second--;
-                if (rest.second) pq.push(rest);
-                curTasks.push_back(rest.first);
+                top.second--;
+                curTasks.push_back(top.first);
+
+                if (top.second) rest.push_back(top);
             }
 
-            // reduce frequency of cur element and add it back to queue
-            cur.second--;
-            if (cur.second) pq.push(cur);
+            // insert rest to pq back
+            for (auto& e : rest) pq.push(e);
 
             // add the remaining cooldown period
             if (pq.size()) {

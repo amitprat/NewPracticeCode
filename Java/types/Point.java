@@ -1,4 +1,4 @@
-package programs.types;
+package Java.types;
 
 import java.util.Objects;
 

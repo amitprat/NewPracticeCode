@@ -1,7 +1,7 @@
-package programs.tree;
+package Java.tree;
 
-import programs.types.Pair;
-import programs.types.TreeNode;
+import Java.types.Pair;
+import Java.types.TreeNode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,30 +22,33 @@ public class IsValidPreorder {
         TreeNode<Integer> node5 = new TreeNode<>(1);
         TreeNode<Integer> node6 = new TreeNode<>(5);
 
-        List<Pair<TreeNode<Integer>, TreeNode<Integer>>> l =
-                Arrays.asList(
-                        new Pair(node1, null),
-                        new Pair(node2, node1),
-                        new Pair(node3, node2),
-                        new Pair(node4, node2),
-                        new Pair(node5, node1),
-                        new Pair(node6, node5)
-                );
+        List<Pair<TreeNode<Integer>, TreeNode<Integer>>> l = Arrays.asList(
+                new Pair(node1, null),
+                new Pair(node2, node1),
+                new Pair(node3, node2),
+                new Pair(node4, node2),
+                new Pair(node5, node1),
+                new Pair(node6, node5));
 
         System.out.println("Is Valid Preorder: " + isValidPreorder(l));
     }
 
     private static boolean isValidPreorder(List<Pair<TreeNode<Integer>, TreeNode<Integer>>> l) {
-        if (l.isEmpty()) return true;
-        if (l.get(0).second != null) return false;
+        if (l.isEmpty())
+            return true;
+        if (l.get(0).second != null)
+            return false;
 
         Stack<Pair<TreeNode<Integer>, TreeNode<Integer>>> st = new Stack<>();
         st.push(l.get(0));
 
-        for (int i = 1; i < l.size(); ) {
-            if (st.empty()) return false;
-            else if (l.get(i).second != st.peek().first) st.pop();
-            else st.push(l.get(i++));
+        for (int i = 1; i < l.size();) {
+            if (st.empty())
+                return false;
+            else if (l.get(i).second != st.peek().first)
+                st.pop();
+            else
+                st.push(l.get(i++));
         }
 
         return true;

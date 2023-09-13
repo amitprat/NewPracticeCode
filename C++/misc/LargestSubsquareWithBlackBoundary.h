@@ -1,5 +1,3 @@
-#include "../header.h"
-
 /* Cracking the coding interview
 20.11 Imagine you have a square matrix, where each cell is filled with either black or white. Design an algorithm to find the maximum subsquare such that all four borders are filled with black pixels.
 Assumption: Square is of size NxN.
@@ -11,32 +9,35 @@ This algorithm does the following:
 Time complexity: O(N^2).
 */
 
-class LargestSubSquareWithAllBlackBoundary {
-    struct Square {
-        int r;
-        int sz;
-        Square(int r = 0, int sz = 0) : r(r), sz(sz) {}
-    };
+#include "../header.h"
 
+class LargestSubsquareWithBlackBoundary {
    public:
     static void test() {
-        vector<vector<bool>> matrix = {{1, 1, 1, 1}, {1, 1, 1, 1}, {0, 1, 1, 1}, {1, 0, 1, 1}};
-        Sqaure square = findLargestSubsquare(arr);
-        cout << square.sz << endl;
+        vector<vector<int>> matrix = {
+            {1, 1, 1, 1},
+            {1, 1, 1, 1},
+            {0, 1, 1, 1},
+            {1, 0, 1, 1}};
+        LargestSubsquareWithBlackBoundary obj;
+        auto result = obj.findLargestSubsqaure(matrix);
+        cout << format("Largest subsquare is of size={}, starting at row={}, col={}", get<2>(result), get<0>(result), get<1>(result)) << endl;
     }
 
    private:
-    subsq findLargestSubsquare(vector<vector<bool>>& matrix) {
+    tuple<int, int, int> findLargestSubsqaure(vector<vector<int>>& matrix) {
         int maxSz = 0;
         int col = 0;
-        Square sq;
+        int N = matrix.size();
+        tuple<int, int, int> result;
+
         while (N - col > maxSz) {
             for (int row = 0; row < N; row++) {
                 int size = N - max(row, col);
                 while (size > maxSz) {
-                    if (isSquare(arr, row, col, size)) {
+                    if (isSquareWithBlackBoundary(matrix, row, col, size)) {
                         maxSz = size;
-                        sq = Sqaure(row, size);
+                        result = {row, col, size};
                         break;
                     }
                     size--;
@@ -44,20 +45,21 @@ class LargestSubSquareWithAllBlackBoundary {
             }
             col++;
         }
-
-        return sq;
+        return result;
     }
 
-    bool isSquare(bool arr[][N], int r, int c, int sz) {
+    bool isSquareWithBlackBoundary(vector<vector<int>>& matrix, int r, int c, int sz) {
+        // check first and last column for each row
         for (int i = r; i < r + sz; i++) {
-            if (!arr[i][c] || !arr[i][c + sz - 1])
-                return false;
-        }
-        for (int i = c; i < c + sz; i++) {
-            if (!arr[r][i] || !arr[r + sz - 1][i])
+            if (!matrix[i][c] || !matrix[i][c + sz - 1])
                 return false;
         }
 
+        // check first and last row for each column
+        for (int i = c; i < c + sz; i++) {
+            if (!matrix[r][i] || !matrix[r + sz - 1][i])
+                return false;
+        }
         return true;
     }
 };

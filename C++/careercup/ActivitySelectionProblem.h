@@ -1,10 +1,6 @@
-#pragma once
-#include "../Header.h"
-
-
+#include "../header.h"
 /*
 https://www.careercup.com/question?id=6306164115505152
-
 
 We have a day to work and we have different kinds works do to which has start-time and end-time. We have to choose the different works so that we can achieve the maximum number of minutes in a day to work. Chosen works should not overlaps to each other.
 Ex-1:
@@ -25,50 +21,49 @@ W5: 10:30 14:00
 W6: 9:00 11:30
 Solution : W1 + W6 + W3 = 390min
 */
-class ActivitySelectionProblem
-{
-    struct Job
-    {
+class ActivitySelectionProblem {
+    struct Job {
         int start, end, weight;
-        Job(int start, int end, int weight) :start(start), end(end), weight(weight) {}
+        Job(int start, int end, int weight) : start(start), end(end), weight(weight) {}
         string to_string() {
             return "{" + std::to_string(start) + "," + std::to_string(end) + "," + std::to_string(weight) + "}";
         }
     };
-public:
+
+   public:
     static void test() {
-        vector<Interval> tasks = { {5, 9}, {1, 2}, {3, 4}, {0, 6},{5, 7}, {8, 9} };
+        vector<Interval> tasks = {{5, 9}, {1, 2}, {3, 4}, {0, 6}, {5, 7}, {8, 9}};
 
         selectMaximumNumberOfNonConflictingActivities(tasks);
 
         {
-            vector<Job> weightedJobs = { {3, 10, 20}, {1, 2, 50}, {6, 19, 100}, {2, 100, 200} };
+            vector<Job> weightedJobs = {{3, 10, 20}, {1, 2, 50}, {6, 19, 100}, {2, 100, 200}};
             int res = selectJobsWithMaximumWeight(weightedJobs);
             cout << "Result = " << res << endl;
         }
 
         {
-            vector<Job> weightedJobs = { {3, 10, 20}, {1, 2, 50}, {6, 19, 100}, {2, 100, 200} };
+            vector<Job> weightedJobs = {{3, 10, 20}, {1, 2, 50}, {6, 19, 100}, {2, 100, 200}};
             int res = selectJobsWithMaximumWeightOptimizedLinearSearch(weightedJobs);
             cout << "Result = " << res << endl;
         }
 
         {
-            vector<Job> weightedJobs = { {3, 10, 20}, {1, 2, 50}, {6, 19, 100}, {2, 100, 200} };
+            vector<Job> weightedJobs = {{3, 10, 20}, {1, 2, 50}, {6, 19, 100}, {2, 100, 200}};
             int res = selectJobsWithMaximumWeightOptimizedBinarySearch(weightedJobs);
             cout << "Result = " << res << endl;
         }
 
         {
-            vector<Job> weightedJobs = { {600, 830, 230}, {900, 1100, 200}, {1230, 1400, 150}, {800, 900, 100},{1030, 1400, 350},{900, 1130, 250} };
+            vector<Job> weightedJobs = {{600, 830, 230}, {900, 1100, 200}, {1230, 1400, 150}, {800, 900, 100}, {1030, 1400, 350}, {900, 1130, 250}};
             int res = selectJobsWithMaximumWeightOptimizedBinarySearch(weightedJobs);
             cout << "Result = " << res << endl;
         }
     }
 
-    static void selectMaximumNumberOfNonConflictingActivities(vector<Interval> tasks)
-    {
-        sort(tasks.begin(), tasks.end(), [](const auto& f, const auto& s) {return f.end < s.end; });
+    static void selectMaximumNumberOfNonConflictingActivities(vector<Interval> tasks) {
+        sort(tasks.begin(), tasks.end(), [](const auto& f, const auto& s) { return f.end < s.end; });
+
         int i = -1;
         for (int j = 0; j < tasks.size(); j++) {
             if (i == -1 || tasks[j].start >= tasks[i].end) {
@@ -79,10 +74,10 @@ public:
         cout << endl;
     }
 
-    static int selectJobsWithMaximumWeight(vector<Job>& weightedJobs)
-    {
-        sort(weightedJobs.begin(), weightedJobs.end(), [](const auto& f, const auto& s) {return f.end < s.end; });
+    static int selectJobsWithMaximumWeight(vector<Job>& weightedJobs) {
+        sort(weightedJobs.begin(), weightedJobs.end(), [](const auto& f, const auto& s) { return f.end < s.end; });
         int n = weightedJobs.size();
+
         int* memo = new int[n + 1];
         memo[0] = 0;
 
@@ -97,12 +92,12 @@ public:
         return memo[n];
     }
 
-    static int selectJobsWithMaximumWeightOptimizedLinearSearch(vector<Job>& weightedJobs)
-    {
+    static int selectJobsWithMaximumWeightOptimizedLinearSearch(vector<Job>& weightedJobs) {
         if (weightedJobs.empty()) return 0;
 
-        sort(weightedJobs.begin(), weightedJobs.end(), [](const auto& f, const auto& s) {return f.end < s.end; });
+        sort(weightedJobs.begin(), weightedJobs.end(), [](const auto& f, const auto& s) { return f.end < s.end; });
         int n = weightedJobs.size();
+
         int* memo = new int[n];
         memo[0] = weightedJobs[0].weight;
 
@@ -123,12 +118,12 @@ public:
         return -1;
     }
 
-    static int selectJobsWithMaximumWeightOptimizedBinarySearch(vector<Job>& weightedJobs)
-    {
+    static int selectJobsWithMaximumWeightOptimizedBinarySearch(vector<Job>& weightedJobs) {
         if (weightedJobs.empty()) return 0;
 
-        sort(weightedJobs.begin(), weightedJobs.end(), [](const auto& f, const auto& s) {return f.end < s.end; });
+        sort(weightedJobs.begin(), weightedJobs.end(), [](const auto& f, const auto& s) { return f.end < s.end; });
         int n = weightedJobs.size();
+
         int* memo = new int[n];
         memo[0] = weightedJobs[0].weight;
 

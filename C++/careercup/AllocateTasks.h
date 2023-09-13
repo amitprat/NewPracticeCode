@@ -1,5 +1,4 @@
-#include "../Header.h"
-
+#include "../header.h"
 /*
 https://www.careercup.com/question?id=6282171643854848
 
@@ -18,44 +17,55 @@ For this example, program should return false.
 Got some idea that this needs to be solved using dynamic programming concept, but could not figure out exact solution.
 */
 
-public
-boolean canArrange(int[] servers, int[] tasks)
-{
-    boolean[] used = new boolean[tasks.length];
-    return canArrangeRecursive(servers, tasks, used);
-}
+class AllocateTasks {
+   public:
+    bool canArrange(int servers[], int tasks[], int length) {
+        bool *used = new bool[length];
+        memset(used, false, length * sizeof(bool));
 
-public
-boolean canArrangeRecursive(int[] servers, int[] tasks, boolean[] used)
-{
-    boolean allUsed = true;
-    for (boolean b : used)
-    {
-        allUsed &= b;
+        return canArrangeRecursive(servers, tasks, used, length);
     }
-    if (allUsed)
-    {
-        return true;
-    }
-    for (int i = 0; i < tasks.length; i++)
-    {
-        if (!used[i])
-        {
-            used[i] = true;
-            for (int j = 0; j < servers.length; j++)
-            {
-                if (servers[j] >= tasks[i])
-                {
-                    servers[j] = servers[j] - tasks[i];
-                    if (canArrangeRecursive(servers, tasks, used))
-                    {
-                        return true;
-                    }
-                    servers[j] = servers[j] + tasks[i];
-                }
-            }
-            used[i] = false;
+
+   public:
+    bool canArrangeRecursive(int servers[], int tasks[], bool used[], int length) {
+        bool allUsed = true;
+        for (int i = 0; i < length; i++) {
+            allUsed &= used[i];
         }
+        if (allUsed) return true;
+
+        for (int i = 0; i < length; i++) {  // find an unassigned task
+            if (!used[i]) {
+                used[i] = true;
+                for (int j = 0; j < length; j++) {  // find server with availability to place this task
+                    if (servers[j] >= tasks[i]) {
+                        servers[j] = servers[j] - tasks[i];
+                        if (canArrangeRecursive(servers, tasks, used, length)) {
+                            return true;
+                        }
+                        servers[j] = servers[j] + tasks[i];
+                    }
+                }
+                used[i] = false;
+            }
+        }
+
+        return false;
     }
-    return false;
-}
+
+   public:
+    bool canArrangeRecursive2(int servers[], int tasks[], bool used[], int length) {
+        if (length == 0) return true;
+
+        // find placement for last task on all servers if they have capacity
+        for (int i = 0; i < length; i++) {
+            if (servers[i] >= tasks[length]) {
+                servers[i] -= tasks[length];
+                if (canArrangeRecursive2(servers, tasks, used, length - 1)) return true;
+                servers[i] += tasks[length];
+            }
+        }
+
+        return false;
+    }
+};

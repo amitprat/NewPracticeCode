@@ -1,4 +1,4 @@
-package programs.types;
+package Java.types;
 
 public class Interval implements Comparable {
     public int start, end;
